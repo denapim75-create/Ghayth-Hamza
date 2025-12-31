@@ -16,6 +16,11 @@
             -webkit-font-smoothing: antialiased;
             color: #1a1a1a;
             overflow-x: hidden;
+            /* Metin seçmeyi engelle (Opsiyonel: Kodların kopyalanmasını zorlaştırır) */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         h1, h2, h3, .serif-font { font-family: 'Playfair Display', serif; }
         .animate-in { animation: fadeIn 0.4s ease-out forwards; }
@@ -27,6 +32,30 @@
         ::-webkit-scrollbar-thumb { background: #d4a373; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #bc8a5f; }
     </style>
+    <script>
+        // KOD KORUMA SİSTEMİ
+        document.addEventListener('contextmenu', event => event.preventDefault()); // Sağ tıkı engelle
+        
+        document.onkeydown = function(e) {
+            // F12 tuşunu engelle
+            if(event.keyCode == 123) return false;
+            // Ctrl+Shift+I (İncele) engelle
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            // Ctrl+Shift+J (Konsol) engelle
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            // Ctrl+U (Kaynak Kodu) engelle
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        };
+
+        // Konsol açılırsa uyarı ver veya debugger takılmasını sağla
+        setInterval(function() {
+            if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+                // Eğer konsol açıksa burası tetiklenebilir
+                console.clear();
+                console.log("%cDUR! %cBu projenin kodları Ghayth Hamza'ya aittir.", "color: red; font-size: 40px; font-weight: bold; -webkit-text-stroke: 1px black;", "color: black; font-size: 20px;");
+            }
+        }, 1000);
+    </script>
 <script type="importmap">
 {
   "imports": {

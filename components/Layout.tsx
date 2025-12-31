@@ -20,6 +20,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     }
   }, [isMuted]);
 
+  useEffect(() => {
+    const handleContext = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+    window.addEventListener('contextmenu', handleContext);
+    return () => window.removeEventListener('contextmenu', handleContext);
+  }, []);
+
   const navItems = [
     { path: '/', label: '🏠 Ana Sayfa' },
     { path: '/game', label: '🎮 Oyun' },
@@ -48,6 +56,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className={`p-2 rounded-xl transition-all shadow-sm border ${
                   isMuted ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-emerald-50 border-emerald-200 text-emerald-700'
                 }`}
+                title={isMuted ? "Müziği Aç" : "Müziği Kapat"}
               >
                 <span className="text-lg">{isMuted ? '🔇' : '🔊'}</span>
               </button>
