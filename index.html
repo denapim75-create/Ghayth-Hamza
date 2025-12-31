@@ -8,30 +8,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-main: #fcf9f2;
-        }
+        :root { --bg-main: #fcf9f2; }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-main);
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
             color: #1a1a1a;
+            overflow-x: hidden;
         }
-        h1, h2, h3, .serif-font {
-            font-family: 'Playfair Display', serif;
-        }
-        .animate-in {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+        h1, h2, h3, .serif-font { font-family: 'Playfair Display', serif; }
+        .animate-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .animate-shake { animation: shake 0.2s ease-in-out 0s 2; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #d4a373; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #bc8a5f; }
     </style>
 <script type="importmap">
 {

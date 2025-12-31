@@ -1,27 +1,22 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-const getAI = () => {
-  const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : '';
-  return new GoogleGenAI({ apiKey: apiKey || '' });
+const getApiKey = () => {
+  if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+    return process.env.API_KEY;
+  }
+  return '';
 };
-
-const cleanJSON = (text: string) => {
-  if (!text) return "[]";
-  const start = text.indexOf('[');
-  const end = text.lastIndexOf(']');
-  if (start !== -1 && end !== -1) return text.substring(start, end + 1);
-  return text.trim();
-};
-
-const TURKISH_GRAMMAR = "Cevaplarında Türkçe yazım ve noktalama kurallarına (TDK) harfiyen uy. Nazik ve edebi bir dil kullan.";
 
 export const getQuizQuestions = async (period: string) => {
-  const ai = getAI();
+  const apiKey = getApiKey();
+  if (!apiKey) return [];
+  
+  const ai = new GoogleGenAI({ apiKey });
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `${period} dönemi için 3 orta zorlukta test sorusu hazırla. Sadece JSON array dön. ${TURKISH_GRAMMAR}`,
+      contents: `${period} dönemi için 3 test sorusu hazırla. JSON dön.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -39,40 +34,40 @@ export const getQuizQuestions = async (period: string) => {
         }
       }
     });
-    return JSON.parse(cleanJSON(response.text || "[]"));
+    return JSON.parse(response.text || "[]");
   } catch (error) {
-    console.error("Quiz hatası:", error);
-    return [{
-      question: "Edebiyat yolculuğuna devam etmeye hazır mısınız?",
-      options: ["Evet", "Her zaman"],
-      correctAnswer: 0,
-      explanation: "Küçük bir bağlantı sorunu oluştu ancak azminiz tam!"
-    }];
+    return [];
   }
 };
 
 export const getNPCResponse = async (writer: string, userMessage: string) => {
-  const ai = getAI();
+  const apiKey = getApiKey();
+  if (!apiKey) return "...";
+  
+  const ai = new GoogleGenAI({ apiKey });
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `Sen Türk edebiyatının usta kalemi ${writer}sin. Kısa, öz ve mükemmel bir Türkçe ile cevap ver. Kullanıcı mesajı: ${userMessage}. ${TURKISH_GRAMMAR}`,
+      contents: `Sen ${writer}sin. Kısa cevap ver: ${userMessage}`,
     });
     return response.text || "...";
   } catch (error) {
-    return "Şu an kelimelerim kifayetsiz kalıyor, lütfen tekrar deneyiniz.";
+    return "...";
   }
 };
 
 export const evaluateShortStory = async (story: string) => {
-  const ai = getAI();
+  const apiKey = getApiKey();
+  if (!apiKey) return "Başarıyla kaydedildi.";
+  
+  const ai = new GoogleGenAI({ apiKey });
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `Bu kısa hikayeyi bir edebiyat eleştirmeni olarak 2-3 cümlede değerlendir ve yazım kurallarına uygunluğunu belirt: ${story}. ${TURKISH_GRAMMAR}`,
+      contents: `Bu hikayeyi değerlendir: ${story}`,
     });
-    return response.text || "Eseriniz kütüphanemizin nadide parçaları arasına girdi.";
+    return response.text || "Eseriniz kaydedildi.";
   } catch (error) {
-    return "Hikayeniz başarıyla kaydedildi.";
+    return "Eseriniz kaydedildi.";
   }
 };
