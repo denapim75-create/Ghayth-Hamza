@@ -1,0 +1,7 @@
+{
+  "name": "Edebiyatın Yolculuğu",
+  "description": "Türk edebiyatının dönemlerini oyunlaştırarak öğreten interaktif bir dijital yolculuk platformu.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
